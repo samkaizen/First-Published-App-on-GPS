@@ -57,9 +57,9 @@ const BannerExample = ({ style, title, children, ...props }) => (
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 export default class App extends React.Component {
   componentDidMount(){
-    AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917');
-    AdMobRewarded.requestAd()
-    .then(() => AdMobRewarded.showAd())
+    AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
+    AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
+    AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
      }
  
   render() {
@@ -73,10 +73,7 @@ export default class App extends React.Component {
               adUnitID="ca-app-pub-3940256099942544/6300978111"
               ref={el => (this._smartBannerExample = el)}
             />
-            <Button
-              title="Reload"
-              onPress={() => this._smartBannerExample.loadBanner()}
-            />
+           
           </BannerExample>
 
         <Router />
