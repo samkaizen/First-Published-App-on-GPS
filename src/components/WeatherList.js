@@ -81,7 +81,7 @@ class WeatherList extends React.Component {
     
      else if(this.state.geolocation === true){
        try{
-         let response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?lat=${this.state.location.latitude}&lon=${this.state.location.longitude}&mode=json&unit=metric&cnt=10&APPID=94c6cf0868fa5cb930a5e2d71baf0dbf`);
+         let response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&lat=${this.state.location.latitude}&lon=${this.state.location.longitude}&unit=metric&cnt=10&APPID=94c6cf0868fa5cb930a5e2d71baf0dbf`);
          console.log("response", response);
          this.setState({ dataList: response.data.list, loading: false, city: response.data.city.name, country: response.data.city.country });
        }catch(error){
