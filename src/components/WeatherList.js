@@ -47,7 +47,7 @@ class WeatherList extends React.Component {
  }
 
   setLocation  = () =>{
-     this.setState({geolocation: true, error : null, country : null});
+     this.setState({geolocation: true, error : null, country : null, location : { error : null}});
      navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({
@@ -60,7 +60,6 @@ class WeatherList extends React.Component {
         console.log(position)
       },
       (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     )
    
      
@@ -79,14 +78,13 @@ class WeatherList extends React.Component {
        }
      }
     
-     else if(this.state.geolocation === true){
+     else if(this.state.geolocation){
        try{
-         let response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&lat=${this.state.location.latitude}&lon=${this.state.location.longitude}&unit=metric&cnt=10&APPID=94c6cf0868fa5cb930a5e2d71baf0dbf`);
-         console.log("response", response);
+         let response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&unit=metric&lat=${this.state.location.latitude}&lon=${this.state.location.longitude}&cnt=10&APPID=94c6cf0868fa5cb930a5e2d71baf0dbf`);
          this.setState({ dataList: response.data.list, loading: false, city: response.data.city.name, country: response.data.city.country });
        }catch(error){
          console.log('error', error);
-         this.setState({ error: error , loading : false});
+         this.setState({ error , loading : false, geolocation:false,city : '',error :null });
 
        }
 
@@ -99,6 +97,11 @@ class WeatherList extends React.Component {
       alert ('Please Enter a Valid city First');
       
     }
+     if(this.state.error && this.state.geolocation){
+      alert('Please Turn Gps On! and tRy again');
+      this.setState({error : null})
+
+    }
     this.setState({ loading : true, error : null});
     this.fetchData();
   }
@@ -109,6 +112,7 @@ class WeatherList extends React.Component {
   }
 
   render() {
+    
 
     return (
       <ScrollView style={styles.wrapperStyles} >
@@ -126,7 +130,7 @@ class WeatherList extends React.Component {
                 large
                 backgroundColor='green'
                 title='Turn Geolocation Off!'
-                onPress={() => this.setState({ geolocation: false ,city:null,country :null, error : false})}
+                onPress={() => this.setState({ geolocation: false ,city:null,country :null, error : null})}
                 icon={{ name: 'location-on' }}
 
 
@@ -159,7 +163,10 @@ class WeatherList extends React.Component {
 
              />
               <Text style={styles.errorTextStyle} >
-            {this.state.error ? 'Please Make Sure That The Spelling of The city is Correct If You have Already Chosen One !': null}
+            {this.state.error && !this.state.geolocation ? this.state.error + 'Please Make Sure That The Spelling of The city is Correct If You have Already Chosen One !': null}
+               </Text>
+               <Text style={styles.errorTextStyle} >
+            {this.state.error && this.state.geolocation? this.state.error + 'Please Make Sure That The Gps is Activated on Your Device !': null}
                </Text>
          </Card>
         <Card >

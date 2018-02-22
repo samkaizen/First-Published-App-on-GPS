@@ -67,10 +67,10 @@ export default class App extends React.Component {
       <View style={styles.container}>
         <StatusBar  translucent={false} backgroundColor = "#ddd"
 />
-        <BannerExample title="Smart Banner">
+        <BannerExample >
             <AdMobBanner
               adSize="smartBannerPortrait"
-              adUnitID="ca-app-pub-3940256099942544/6300978111"
+            adUnitID="ca-app-pub-6929970817421020/8030957903"
               ref={el => (this._smartBannerExample = el)}
             />
            
