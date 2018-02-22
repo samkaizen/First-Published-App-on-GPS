@@ -8,6 +8,7 @@ const HEIGHT_DEVICE = Dimensions.get('window').height;
 const WIDTH_DEVICE = Dimensions.get('window').width;
 
 
+
 class WeatherList extends React.Component {
 
   constructor(props){
@@ -20,11 +21,7 @@ class WeatherList extends React.Component {
       dataList : [],
       loading : false,
       geolocation: false,
-      location: {
-        latitude : null,
-        longitude : null , 
-        error : null
-      },
+      location: null,
       country : 'uk',
       error : null
 
@@ -73,19 +70,23 @@ class WeatherList extends React.Component {
          this.setState({ dataList: response.data.list, loading: false, city: response.data.city.name, country: response.data.city.country });
 
        }catch(error){
-         console.log('Error ' , error);
+        // console.log('Error ' , error);
          this.setState({ error : error, loading : false,})
        }
      }
     
      else if(this.state.geolocation){
        try{
-         let response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&unit=metric&lat=${this.state.location.latitude}&lon=${this.state.location.longitude}&cnt=10&APPID=94c6cf0868fa5cb930a5e2d71baf0dbf`);
+         let response = await axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?lat=${this.state.location.latitude}&lon=${this.state.location.longitude}&mode=json&unit=metric&cnt=10&APPID=94c6cf0868fa5cb930a5e2d71baf0dbf`);
+         console.log("response", response);
          this.setState({ dataList: response.data.list, loading: false, city: response.data.city.name, country: response.data.city.country });
        }catch(error){
-         console.log('error', error);
-         this.setState({ error , loading : false, geolocation:false,city : '',error :null });
-
+        // console.log('error', error);
+        //alert (error)
+        this.setState({geolocation:false, error: null, loading :false})
+      
+        
+       
        }
 
      }
@@ -97,11 +98,7 @@ class WeatherList extends React.Component {
       alert ('Please Enter a Valid city First');
       
     }
-     if(this.state.error && this.state.geolocation){
-      alert('Please Turn Gps On! and tRy again');
-      this.setState({error : null})
 
-    }
     this.setState({ loading : true, error : null});
     this.fetchData();
   }
@@ -111,8 +108,8 @@ class WeatherList extends React.Component {
   return  this.state.dataList.map(listItem => <WeatherDetail key={listItem.dt} listItem={listItem}  /> )
   }
 
+  
   render() {
-    
 
     return (
       <ScrollView style={styles.wrapperStyles} >
@@ -130,7 +127,7 @@ class WeatherList extends React.Component {
                 large
                 backgroundColor='green'
                 title='Turn Geolocation Off!'
-                onPress={() => this.setState({ geolocation: false ,city:null,country :null, error : null})}
+                onPress={() => this.setState({ geolocation: false ,city:null,country :null, error : false})}
                 icon={{ name: 'location-on' }}
 
 
@@ -152,7 +149,8 @@ class WeatherList extends React.Component {
            
               <Text style={{ fontSize: 18 }}> Press Search Now! </Text>
 
-          </View>}
+          </View>
+        }
             <Button
                
                raised
@@ -163,10 +161,10 @@ class WeatherList extends React.Component {
 
              />
               <Text style={styles.errorTextStyle} >
-            {this.state.error && !this.state.geolocation ? this.state.error + 'Please Make Sure That The Spelling of The city is Correct If You have Already Chosen One !': null}
+            {this.state.error && !this.state.geolocation ? this.state.error +  'Please Make Sure That The Spelling of The city is Correct If You have Already Chosen One !': null}
                </Text>
                <Text style={styles.errorTextStyle} >
-            {this.state.error && this.state.geolocation? this.state.error + 'Please Make Sure That The Gps is Activated on Your Device !': null}
+            {this.state.error && this.state.geolocation ? this.state.error +  'Please Activate The Gps on Your Device!': null}
                </Text>
          </Card>
         <Card >
