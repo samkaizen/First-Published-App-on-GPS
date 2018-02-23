@@ -57,7 +57,7 @@ const BannerExample = ({ style, title, children, ...props }) => (
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
 export default class App extends React.Component {
   componentDidMount(){
-    AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/1033173712');
+    AdMobInterstitial.setAdUnitID('ca-app-pub-6929970817421020/7345990217');
     AdMobInterstitial.setTestDevices([AdMobInterstitial.simulatorId]);
     AdMobInterstitial.requestAd().then(() => AdMobInterstitial.showAd());
      }
