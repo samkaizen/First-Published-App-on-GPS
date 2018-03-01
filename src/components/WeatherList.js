@@ -56,7 +56,9 @@ class WeatherList extends React.Component {
         });
       },
       (error) => this.setState({ error: error.message }),
-    )
+      { enableHighAccuracy : false, timeout: 20000000000000000, maximumAge: 100000 },
+
+    );
    
      
   }
@@ -156,10 +158,10 @@ class WeatherList extends React.Component {
 
              />
               <Text style={styles.errorTextStyle} >
-            {this.state.error && !this.state.geolocation ? this.state.error +  'Please Make Sure That The Spelling of The city is Correct If You have Already Chosen One !': null}
+            {this.state.error && !this.state.geolocation ? this.state.error +  ' : Please Make Sure That The Spelling of The city is Correct If You have Already Chosen One !': null}
                </Text>
                <Text style={styles.errorTextStyle} >
-            {this.state.error && this.state.geolocation ? this.state.error +  'Please Activate The Gps on Your Device!': null}
+            {this.state.error && this.state.geolocation ? this.state.error +  ' : Please Activate The Gps on Your Device. '  +  '\n' +`If The Gps is Already Activated, Press Search, This will bring You Back To First Screen Then Reactivate The Geolocation By Pressing the Red Button.`: null}
                </Text>
          </Card>
         <Card >
